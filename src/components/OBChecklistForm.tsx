@@ -1,28 +1,24 @@
 import React, { useState } from 'react';
-import { 
-  CheckCircle2, 
-  AlertCircle, 
-  Sparkles, 
-  Send, 
-  User, 
-  Clock, 
-  Calendar, 
-  MapPin, 
+import {
+  AlertCircle,
+  Sparkles,
+  Send,
+  Calendar,
+  MapPin,
   ChevronRight,
   ChevronLeft,
   Layers,
   ArrowLeft,
   Check
 } from 'lucide-react';
-import { 
-  DailyChecklistReport, 
-  AreaReport, 
-  ChecklistItem, 
-  ItemStatus, 
+import {
+  DailyChecklistReport,
+  AreaReport,
+  ItemStatus,
   ShiftType,
   AuthUser
 } from '../types';
-import { DEFAULT_AREAS, DEFAULT_SHIFTS } from '../data/presetData';
+import { DEFAULT_AREAS } from '../data/presetData';
 import { PhotoCapture } from './PhotoCapture';
 import { SignaturePad } from './SignaturePad';
 import { saveChecklistReport } from '../services/checklistService';
@@ -40,23 +36,21 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
 }) => {
   const today = new Date().toISOString().split('T')[0];
   const currentTime = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+  const FIXED_SHIFT: ShiftType = 'Pagi';
 
   // View state: 'overview' (pilih area) or 'area_detail' (isi checklist area) or 'summary' (tanda tangan & kirim)
   const [viewStep, setViewStep] = useState<'overview' | 'area_detail' | 'summary'>('overview');
   const [activeAreaIndex, setActiveAreaIndex] = useState(0);
 
-  // Form states
+  // Form states — 1 laporan harian per tanggal, tanpa shift
   const [date, setDate] = useState(today);
   const [time, setTime] = useState(currentTime);
-  const [shift, setShift] = useState<ShiftType>('Pagi');
-  const [obName, setObName] = useState(currentUser.name);
   const [obNotes, setObNotes] = useState('');
   const [obSignature, setObSignature] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Initialize area reports from master data — mulai pending semua (0%) tiap hari
-  const [areaReports, setAreaReports] = useState<AreaReport[]>(() => {
-    return DEFAULT_AREAS.map((area) => ({
+  const buildFreshAreas = (): AreaReport[] =>
+    DEFAULT_AREAS.map((area) => ({
       areaId: area.id,
       areaName: area.name,
       locationFloor: area.floor,
@@ -69,7 +63,20 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
         status: 'pending' as ItemStatus,
       })),
     }));
-  });
+
+  // Initialize area reports — mulai pending semua (0%) tiap tanggal
+  const [areaReports, setAreaReports] = useState<AreaReport[]>(buildFreshAreas);
+
+  // Ganti tanggal = form baru kosong. Isian tanggal lain tidak ikut.
+  const handleDateChange = (newDate: string) => {
+    if (!newDate || newDate === date) return;
+    setDate(newDate);
+    setAreaReports(buildFreshAreas());
+    setActiveAreaIndex(0);
+    setViewStep('overview');
+    setObNotes('');
+    setObSignature('');
+  };
 
   const currentArea = areaReports[activeAreaIndex];
 
@@ -199,7 +206,7 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
       const reportPayload: Omit<DailyChecklistReport, 'id'> = {
         date,
         time,
-        shift,
+        shift: FIXED_SHIFT,
         obName: currentUser.name,
         obId: currentUser.id,
         obNotes: obNotes.trim(),
@@ -242,7 +249,7 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
                 {viewStep === 'summary' && 'Kirim Laporan Checklist'}
               </h2>
               <p className="text-[11px] text-blue-100">
-                Petugas: <strong className="text-white">{currentUser.name}</strong> • Shift {shift}
+                Petugas: <strong className="text-white">{currentUser.name}</strong>
               </p>
             </div>
           </div>
@@ -254,33 +261,16 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
           </div>
         </div>
 
-        {/* Shift & Tanggal Info Bar */}
-        <div className="grid grid-cols-2 gap-2 text-xs">
+        {/* Tanggal Info Bar — ganti tanggal reset form ke 0% */}
+        <div className="text-xs">
           <div className="bg-white/10 backdrop-blur-xs rounded-xl p-2 border border-white/15">
             <label className="text-[10px] text-blue-100 flex items-center gap-1 mb-1">
-              <Clock className="w-3 h-3" /> Shift Kerja
-            </label>
-            <select
-              value={shift}
-              onChange={(e) => setShift(e.target.value as ShiftType)}
-              className="w-full bg-transparent text-white font-semibold outline-none cursor-pointer"
-            >
-              {DEFAULT_SHIFTS.map((s) => (
-                <option key={s} value={s} className="text-slate-800">
-                  Shift {s}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="bg-white/10 backdrop-blur-xs rounded-xl p-2 border border-white/15">
-            <label className="text-[10px] text-blue-100 flex items-center gap-1 mb-1">
-              <Calendar className="w-3 h-3" /> Tanggal
+              <Calendar className="w-3 h-3" /> Tanggal Tugas (ganti = mulai baru 0%)
             </label>
             <input
               type="date"
               value={date}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={(e) => handleDateChange(e.target.value)}
               className="w-full bg-transparent text-white font-semibold outline-none text-xs"
             />
           </div>
