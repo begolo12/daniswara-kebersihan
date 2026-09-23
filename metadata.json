@@ -1,0 +1,6 @@
+{
+  "name": "SiCheck OB & SPV",
+  "description": "Aplikasi PWA checklist kebersihan dan tugas Office Boy dengan approval dan inspeksi real-time oleh Supervisor berbasis Firebase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

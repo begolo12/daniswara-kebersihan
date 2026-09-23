@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background rounded card -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)" />
+
+  <!-- Inner Clipboard Base -->
+  <g filter="url(#shadow)">
+    <rect x="116" y="96" width="280" height="340" rx="32" fill="#ffffff" />
+    <path d="M196 96 C196 74, 214 56, 236 56 L276 56 C298 56, 316 74, 316 96 Z" fill="#93c5fd" />
+    <rect x="220" y="70" width="72" height="36" rx="10" fill="#1e40af" />
+    <circle cx="256" cy="88" r="6" fill="#ffffff" />
+
+    <!-- Checklist rows -->
+    <!-- Row 1 -->
+    <circle cx="166" cy="180" r="16" fill="#dcfce7" />
+    <path d="M158 180 L164 186 L175 174" stroke="#16a34a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <rect x="196" y="172" width="160" height="16" rx="8" fill="#e2e8f0" />
+
+    <!-- Row 2 -->
+    <circle cx="166" cy="235" r="16" fill="#dcfce7" />
+    <path d="M158 235 L164 241 L175 229" stroke="#16a34a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <rect x="196" y="227" width="130" height="16" rx="8" fill="#e2e8f0" />
+
+    <!-- Row 3 -->
+    <circle cx="166" cy="290" r="16" fill="#dbeafe" />
+    <path d="M158 290 L164 296 L175 284" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <rect x="196" y="282" width="145" height="16" rx="8" fill="#e2e8f0" />
+
+    <!-- Stamp / Verified Badge by SPV -->
+    <g transform="translate(280, 310)">
+      <circle cx="60" cy="60" r="42" fill="#16a34a" />
+      <circle cx="60" cy="60" r="37" fill="#ffffff" stroke="#16a34a" stroke-width="2" stroke-dasharray="4 2" />
+      <path d="M46 60 L56 70 L75 51" stroke="#16a34a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <text x="60" y="88" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#16a34a" text-anchor="middle">SPV APPROVED</text>
+    </g>
+  </g>
+
+  <!-- Sparkles for Cleanliness -->
+  <path d="M410 110 L418 128 L436 136 L418 144 L410 162 L402 144 L384 136 L402 128 Z" fill="#fef08a" />
+  <path d="M96 290 L101 302 L113 307 L101 312 L96 324 L91 312 L79 307 L91 302 Z" fill="#67e8f9" />
+</svg>

@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ponytail: rules longgar demo (tanpa Firebase Auth).
+    // Upgrade: kunci per role + validasi field saat Auth aktif.
+    match /daily_checklists/{docId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['date','shift','obName','submittedAt','areas'])
+        && request.resource.data.areas.size() > 0;
+      allow update: if request.resource.data.inspectionStatus in ['pending_review','approved','needs_revision'];
+      allow delete: if false;
+    }
+  }
+}

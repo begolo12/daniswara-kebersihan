@@ -1,0 +1,132 @@
+import { AreaMaster, StaffMaster, ShiftType } from '../types';
+
+export const DEFAULT_SHIFTS: ShiftType[] = ['Pagi', 'Siang', 'Sore', 'Malam'];
+
+export const DEFAULT_STAFF: StaffMaster[] = [
+  { id: 'ob-1', name: 'Budi Santoso', role: 'OB', pin: '1111', active: true },
+  { id: 'ob-2', name: 'Agus Pratama', role: 'OB', pin: '2222', active: true },
+  { id: 'ob-3', name: 'Joko Susilo', role: 'OB', pin: '3333', active: true },
+  { id: 'ob-4', name: 'Dedi Kurniawan', role: 'OB', pin: '4444', active: true },
+  { id: 'spv-1', name: 'Bambang Irawan (SPV)', role: 'SPV', pin: '1234', active: true },
+  { id: 'spv-2', name: 'Dian Lestari (SPV)', role: 'SPV', pin: '5678', active: true },
+];
+
+export const DEFAULT_AREAS: AreaMaster[] = [
+  {
+    id: 'area-toilet-1',
+    name: 'Toilet Pria & Wanita (Lt. 1)',
+    floor: 'Lantai 1',
+    iconName: 'Droplet',
+    defaultTasks: [
+      'Kloset & urinoir disikat bersih & tidak berbau',
+      'Wastafel dicuci & keran air dilap kinclong',
+      'Cermin dilap kering tanpa bercak air',
+      'Sabun cair cuci tangan & tisu terisi penuh',
+      'Lantai disikat, dipel wangi & tidak licin',
+      'Tempat sampah dikosongkan & plastik diganti baru',
+      'Exhaust fan & ventilasi berfungsi normal',
+    ],
+  },
+  {
+    id: 'area-kantor-1',
+    name: 'Ruang Kerja Kantor / Staff',
+    floor: 'Lantai 1',
+    iconName: 'Briefcase',
+    defaultTasks: [
+      'Lantai disapu bersih & dipel aroma segar',
+      'Karpet divacuum bersih dari remah & debu',
+      'Meja kerja & kursi dirapikan serta dilap debu',
+      'Kaca jendela & partisi sekat dilap jernih',
+      'Tempat sampah tiap meja dikosongkan',
+      'AC dibersihkan filter & remote di tempatnya',
+      'Kabel-kabel dirapikan tidak berserakan',
+    ],
+  },
+  {
+    id: 'area-meeting',
+    name: 'Ruang Meeting Utama & VIP',
+    floor: 'Lantai 1',
+    iconName: 'Users',
+    defaultTasks: [
+      'Meja meeting panjang dilap bersih & berkilau',
+      'Kursi meeting disusun rapi & simetris',
+      'Papan tulis / whiteboard dibersihkan spidolnya',
+      'Layar TV / proyektor dilap kain microfiber khusus',
+      'Air mineral & gelas meeting disiapkan rapi',
+      'Lantai dipel wangi & ruangan disemprot pengharum',
+      'Tempat sampah dibuang & plastik baru dipasang',
+    ],
+  },
+  {
+    id: 'area-lobby',
+    name: 'Lobby & Resepsionis Depan',
+    floor: 'Lantai 1',
+    iconName: 'DoorOpen',
+    defaultTasks: [
+      'Pintu kaca utama dilap bening bebas sidik jari',
+      'Meja resepsionis dilap bersih & rapi',
+      'Sofa tunggu tamu dirapikan & divacuum',
+      'Keset pintu masuk divacuum & diposisikan lurus',
+      'Lantai granit/marmer dipel mengkilap tanpa noda',
+      'Tempat sampah luar & dalam dikosongkan',
+      'Tanaman hias indoor disiram & daun dilap debunya',
+    ],
+  },
+  {
+    id: 'area-pantry',
+    name: 'Pantry & Dapur Bersama',
+    floor: 'Lantai 1',
+    iconName: 'Coffee',
+    defaultTasks: [
+      'Wastafel cuci piring disikat bebas lemak & sisa makanan',
+      'Cangkir, sendok & piring kotor dicuci & ditiriskan',
+      'Meja makan & counter top dilap bersih & disterilkan',
+      'Kulkas & microwave luar dalam dibersihkan dari tumpahan',
+      'Dispenser air dilap bersih & galon dicek ketersediaannya',
+      'Tempat sampah organik/anorganik dibuang & diikat rapat',
+      'Lantai dapur dipel bersih anti minyak',
+    ],
+  },
+  {
+    id: 'area-musholla',
+    name: 'Musholla & Tempat Wudhu',
+    floor: 'Lantai 1',
+    iconName: 'Compass',
+    defaultTasks: [
+      'Karpet sajadah divacuum bersih & disemprot wewangian',
+      'Mukena, sarung & sajadah dilipat rapi di lemari',
+      'Al-Quran & rak buku ditata rapi bebas debu',
+      'Area tempat wudhu disikat tidak berlumut/licin',
+      'Saluran pembuangan air wudhu lancar tanpa genangan',
+      'Lantai luar musholla dipel kering',
+      'Pengharum ruangan musholla dicek & dinyalakan',
+    ],
+  },
+  {
+    id: 'area-tangga',
+    name: 'Koridor, Tangga & Pintu Darurat',
+    floor: 'Semua Lantai',
+    iconName: 'Steps',
+    defaultTasks: [
+      'Handrail / pegangan tangga dilap bersih & didesinfeksi',
+      'Anak tangga disapu bersih dari debu & dipel',
+      'Dinding koridor dicek dari sarang laba-laba / noda',
+      'Lampu penerangan tangga dicek menyala',
+      'Pintu darurat dipastikan tidak terhalang barang',
+      'APAR (Tabung Pemadam) dilap bersih dari debu',
+    ],
+  },
+  {
+    id: 'area-parkir',
+    name: 'Area Parkir & Halaman Depan',
+    floor: 'Luar',
+    iconName: 'Car',
+    defaultTasks: [
+      'Halaman & paving block disapu dari daun gugur & puntung rokok',
+      'Tempat sampah luar dibersihkan & ditutup rapat',
+      'Saluran air got depan dipastikan tidak mampet sampah',
+      'Pos satpam / security dibantu sapu & pel',
+      'Tanaman depan disiram & dirawat',
+    ],
+  },
+];
