@@ -33,7 +33,9 @@ export const SPVReviewDashboard: React.FC<SPVReviewDashboardProps> = ({
   currentUser,
   reports 
 }) => {
-  const [filterStatus, setFilterStatus] = useState<'all' | InspectionStatus>('all');
+  const todayStr = new Date().toISOString().split('T')[0];
+  const [filterStatus, setFilterStatus] = useState<'all' | InspectionStatus>('pending_review');
+  const [dateFilter, setDateFilter] = useState<string>(todayStr);
   const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -46,8 +48,9 @@ export const SPVReviewDashboard: React.FC<SPVReviewDashboardProps> = ({
 
   const selectedReport = reports.find((r) => r.id === selectedReportId);
 
-  // Filter reports
+  // Filter reports: default hari ini + perlu dicek
   const filteredReports = reports.filter((r) => {
+    if (dateFilter && r.date !== dateFilter) return false;
     if (filterStatus !== 'all' && r.inspectionStatus !== filterStatus) return false;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
@@ -425,23 +428,42 @@ export const SPVReviewDashboard: React.FC<SPVReviewDashboardProps> = ({
           </div>
 
           {/* Filter and Search Bar */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-2.5 shadow-xs flex items-center gap-2">
-            <Search className="w-4 h-4 text-slate-400 flex-shrink-0" />
-            <input
-              type="text"
-              placeholder="Cari nama OB, tanggal, atau shift..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full text-xs text-slate-800 bg-transparent outline-none placeholder-slate-400"
-            />
-            {filterStatus !== 'all' && (
-              <button
-                onClick={() => setFilterStatus('all')}
-                className="text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-2 py-1 rounded-lg flex-shrink-0"
-              >
-                Reset Filter
-              </button>
-            )}
+          <div className="bg-white rounded-2xl border border-slate-200 p-2.5 shadow-xs space-y-2">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-slate-400 flex-shrink-0" />
+              <input
+                type="date"
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+                className="text-xs text-slate-800 bg-transparent outline-none flex-1"
+              />
+              {dateFilter && (
+                <button
+                  onClick={() => setDateFilter('')}
+                  className="text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-2 py-1 rounded-lg flex-shrink-0"
+                >
+                  Semua Tgl
+                </button>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <Search className="w-4 h-4 text-slate-400 flex-shrink-0" />
+              <input
+                type="text"
+                placeholder="Cari nama OB, tanggal, atau shift..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full text-xs text-slate-800 bg-transparent outline-none placeholder-slate-400"
+              />
+              {filterStatus !== 'all' && (
+                <button
+                  onClick={() => setFilterStatus('all')}
+                  className="text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-2 py-1 rounded-lg flex-shrink-0"
+                >
+                  Semua Status
+                </button>
+              )}
+            </div>
           </div>
 
           {/* List of Reports */}
@@ -451,8 +473,18 @@ export const SPVReviewDashboard: React.FC<SPVReviewDashboardProps> = ({
                 <FileText className="w-8 h-8 mx-auto text-slate-300" />
                 <p className="text-xs font-semibold">Tidak ada checklist ditemukan</p>
                 <p className="text-[11px] text-slate-400">
-                  Data checklist yang dikirimkan oleh Petugas OB akan otomatis muncul di sini secara real-time.
+                  {reports.length === 0
+                    ? 'Belum ada kiriman dari OB. Checklist terkirim muncul di sini real-time.'
+                    : `Filter aktif: tanggal ${dateFilter || 'semua'} • status ${filterStatus === 'all' ? 'semua' : filterStatus}. Ubah filter untuk lihat data lain.`}
                 </p>
+                {(dateFilter || filterStatus !== 'all') && (
+                  <button
+                    onClick={() => { setDateFilter(''); setFilterStatus('all'); setSearchQuery(''); }}
+                    className="text-[11px] font-bold text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-xl"
+                  >
+                    Tampilkan Semua Data
+                  </button>
+                )}
               </div>
             ) : (
               filteredReports.map((report) => {

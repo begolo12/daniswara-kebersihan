@@ -2,7 +2,7 @@ export type UserRole = 'OB' | 'SPV';
 
 export type ShiftType = 'Pagi' | 'Siang' | 'Sore' | 'Malam';
 
-export type ItemStatus = 'done' | 'issue' | 'na';
+export type ItemStatus = 'pending' | 'done' | 'issue' | 'na';
 
 export type InspectionStatus = 'pending_review' | 'approved' | 'needs_revision';
 

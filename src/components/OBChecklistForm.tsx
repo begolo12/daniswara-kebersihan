@@ -54,7 +54,7 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
   const [obSignature, setObSignature] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Initialize area reports from master data
+  // Initialize area reports from master data — mulai pending semua (0%) tiap hari
   const [areaReports, setAreaReports] = useState<AreaReport[]>(() => {
     return DEFAULT_AREAS.map((area) => ({
       areaId: area.id,
@@ -66,7 +66,7 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
       items: area.defaultTasks.map((task, idx) => ({
         id: `${area.id}-item-${idx}`,
         name: task,
-        status: 'done' as ItemStatus, // default to done for convenience
+        status: 'pending' as ItemStatus,
       })),
     }));
   });
@@ -153,6 +153,16 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
   // Form submission
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+
+    const pendingItems = areaReports.flatMap((a) =>
+      a.items.filter((i) => i.status === 'pending').map((i) => ({ area: a, item: i }))
+    );
+    if (pendingItems.length > 0) {
+      alert(`Masih ada ${pendingItems.length} tugas belum dikerjakan. Tandai Bersih / Kendala / N/A dulu. Contoh: ${pendingItems[0].item.name}`);
+      setActiveAreaIndex(areaReports.indexOf(pendingItems[0].area));
+      setViewStep('area_detail');
+      return;
+    }
 
     if (!obSignature) {
       alert('Tanda tangan OB wajib diisi sebelum kirim.');
@@ -294,6 +304,7 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
             {areaReports.map((area, idx) => {
               const allDone = area.items.every((i) => i.status === 'done');
               const hasIssue = area.items.some((i) => i.status === 'issue');
+              const pendingCount = area.items.filter((i) => i.status === 'pending').length;
               const doneCount = area.items.filter((i) => i.status === 'done').length;
 
               return (
@@ -341,9 +352,14 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
                         Bersih
                       </span>
                     )}
-                    {hasIssue && (
+                    {!allDone && hasIssue && (
                       <span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-[10px] font-bold border border-amber-200">
                         Ada Kendala
+                      </span>
+                    )}
+                    {!allDone && pendingCount > 0 && (
+                      <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold border border-slate-200">
+                        {pendingCount} Belum
                       </span>
                     )}
                     <ChevronRight className="w-4 h-4 text-slate-400" />
@@ -400,6 +416,7 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
                 const isDone = item.status === 'done';
                 const isIssue = item.status === 'issue';
                 const isNa = item.status === 'na';
+                const isPending = item.status === 'pending';
 
                 return (
                   <div
@@ -409,6 +426,8 @@ export const OBChecklistForm: React.FC<OBChecklistFormProps> = ({
                         ? 'bg-emerald-50/50 border-emerald-200/70'
                         : isIssue
                         ? 'bg-amber-50/60 border-amber-300'
+                        : isPending
+                        ? 'bg-slate-50 border-dashed border-slate-300'
                         : 'bg-slate-50 border-slate-200'
                     }`}
                   >
