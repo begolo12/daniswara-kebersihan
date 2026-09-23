@@ -21,7 +21,7 @@ import { PWAInstallButton } from './components/PWAInstallButton';
 import { OfflineIndicator } from './components/OfflineIndicator';
 import { subscribeToChecklists } from './services/checklistService';
 
-const AUTH_STORAGE_KEY = 'sicheck_auth_user';
+const AUTH_STORAGE_KEY = 'sicheck_auth_user_v2';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => {

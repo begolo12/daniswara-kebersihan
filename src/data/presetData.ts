@@ -3,12 +3,8 @@ import { AreaMaster, StaffMaster, ShiftType } from '../types';
 export const DEFAULT_SHIFTS: ShiftType[] = ['Pagi', 'Siang', 'Sore', 'Malam'];
 
 export const DEFAULT_STAFF: StaffMaster[] = [
-  { id: 'ob-1', name: 'Budi Santoso', role: 'OB', pin: '1111', active: true },
-  { id: 'ob-2', name: 'Agus Pratama', role: 'OB', pin: '2222', active: true },
-  { id: 'ob-3', name: 'Joko Susilo', role: 'OB', pin: '3333', active: true },
-  { id: 'ob-4', name: 'Dedi Kurniawan', role: 'OB', pin: '4444', active: true },
-  { id: 'spv-1', name: 'Bambang Irawan (SPV)', role: 'SPV', pin: '1234', active: true },
-  { id: 'spv-2', name: 'Dian Lestari (SPV)', role: 'SPV', pin: '5678', active: true },
+  { id: 'ob-kurniawan', name: 'Kurniawan', role: 'OB', pin: '1234', active: true },
+  { id: 'spv-lucky', name: 'Lucky', role: 'SPV', pin: '4321', active: true },
 ];
 
 export const DEFAULT_AREAS: AreaMaster[] = [
